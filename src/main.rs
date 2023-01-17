@@ -3,6 +3,8 @@ use std::env;
 use serenity::client::ClientBuilder;
 use serenity::prelude::*;
 
+mod events;
+
 // Registers handlers and starts the bot
 #[tokio::main]
 async fn main()
