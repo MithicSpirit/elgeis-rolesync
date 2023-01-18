@@ -1,9 +1,9 @@
 use serenity::client::ClientBuilder;
 use serenity::prelude::*;
 
-pub(crate) mod core;
 pub(crate) mod config;
 mod events;
+pub(crate) mod user;
 
 // Registers handlers and starts the bot
 #[tokio::main]
