@@ -2,12 +2,27 @@ use serenity::async_trait;
 use serenity::model::prelude::*;
 use serenity::prelude::*;
 
+use crate::context::keys::*;
+use crate::context::populate_context;
+
 pub struct Handler {}
 pub const HANDLER: Handler = Handler {};
 
 #[async_trait]
 impl EventHandler for Handler
 {
+	async fn ready(&self, ctx: Context, _: Ready)
+	{
+		println!("Bot started!");
+		populate_context(&ctx).await;
+		let data = ctx.data.read().await;
+		let roles = data
+			.get::<RoleMap>()
+			.expect("Bot initialized incorrectly");
+		println!("Bot initialized");
+		dbg!(roles);
+	}
+
 	// elgeis
 	async fn guild_ban_addition(
 		&self,
@@ -42,7 +57,6 @@ impl EventHandler for Handler
 		ctx: Context,
 		guild: GuildId,
 		user: User,
-		_: Option<Member>,
 	)
 	{
 		todo!();
@@ -51,8 +65,7 @@ impl EventHandler for Handler
 	async fn guild_member_update(
 		&self,
 		ctx: Context,
-		old: Option<Member>,
-		member: Member,
+		update: GuildMemberUpdateEvent,
 	)
 	{
 		todo!();
@@ -64,19 +77,13 @@ impl EventHandler for Handler
 		ctx: Context,
 		guild: GuildId,
 		role: RoleId,
-		data: Option<Role>,
 	)
 	{
 		todo!();
 	}
 
 	// elgeis
-	async fn guild_role_update(
-		&self,
-		ctx: Context,
-		old: Option<Role>,
-		role: Role,
-	)
+	async fn guild_role_update(&self, ctx: Context, role: Role)
 	{
 		todo!();
 	}

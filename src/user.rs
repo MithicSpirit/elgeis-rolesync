@@ -1,8 +1,6 @@
 use serenity::model::prelude::*;
 use serenity::prelude::*;
 
-use crate::config::Config;
-
 pub fn ban(ctx: Context, user: User)
 {
 	todo!();

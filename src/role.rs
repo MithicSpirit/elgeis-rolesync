@@ -1,11 +1,12 @@
 use serenity::model::prelude::*;
 use serenity::prelude::*;
 
-use crate::config::Config;
-
-pub fn delete(conf: Config, id: RoleId)
+pub fn delete(ctx: Context, id: RoleId)
 {
 	todo!();
 }
 
-pub fn sync(conf: Config, role: Role) {}
+pub fn sync(ctx: Context, role: Role)
+{
+	todo!();
+}

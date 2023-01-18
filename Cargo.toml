@@ -9,7 +9,7 @@ edition = "2021"
 
 [dependencies.serenity]
 default-features = false
-features = ["builder", "cache", "client", "gateway", "model", "utils", "rustls_backend"]
+features = ["builder", "client", "gateway", "model", "utils", "rustls_backend"]
 version = "0.11"
 
 [dependencies.tokio]
