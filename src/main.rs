@@ -1,23 +1,20 @@
-use std::env;
-
 use serenity::client::ClientBuilder;
 use serenity::prelude::*;
 
 pub(crate) mod core;
+pub(crate) mod config;
 mod events;
 
 // Registers handlers and starts the bot
 #[tokio::main]
 async fn main()
 {
-	let token = env::var("DISCORD_TOKEN").unwrap_or_default();
-	// validate(&token).expect(format!("Invalid token `{token}'").as_str());
-	// ^ doesn't work for some reason
+	let config = config::gen_config();
 
 	let intents = GatewayIntents::non_privileged()
 		| GatewayIntents::GUILD_MEMBERS;
 
-	let mut client = ClientBuilder::new(token, intents)
+	let mut client = ClientBuilder::new(config.token, intents)
 		.event_handler(events::HANDLER)
 		.await
 		.expect("Failed to create client");
