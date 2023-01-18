@@ -32,14 +32,18 @@ pub async fn populate_context(ctx: &Context)
 	//dbg!(source_roles_id_name);
 	//dbg!(target_roles_name_id);
 
-	let role_map: HashMap<RoleId, RoleId> = source_roles_id_name
-		.iter()
-		.filter_map(|(id, name)| {
+	let mut role_map: HashMap<RoleId, RoleId> = HashMap::new();
+	let mut rev_role_map: HashMap<RoleId, RoleId> = HashMap::new();
+	for (source_role, target_role) in
+		source_roles_id_name.iter().filter_map(|(id, name)| {
 			target_roles_name_id.get(name).map(|x| (*id, *x))
-		})
-		.collect();
+		}) {
+		role_map.insert(source_role, target_role);
+		rev_role_map.insert(target_role, source_role);
+	}
 
 	data.insert::<RoleMap>(role_map);
+	data.insert::<RevRoleMap>(rev_role_map);
 }
 
 async fn target_roles(
@@ -86,6 +90,12 @@ pub mod keys
 
 	pub struct RoleMap {}
 	impl TypeMapKey for RoleMap
+	{
+		type Value = HashMap<RoleId, RoleId>;
+	}
+
+	pub struct RevRoleMap {}
+	impl TypeMapKey for RevRoleMap
 	{
 		type Value = HashMap<RoleId, RoleId>;
 	}
