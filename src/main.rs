@@ -3,6 +3,7 @@ use std::env;
 use serenity::client::ClientBuilder;
 use serenity::prelude::*;
 
+pub(crate) mod core;
 mod events;
 
 // Registers handlers and starts the bot
@@ -17,6 +18,7 @@ async fn main()
 		| GatewayIntents::GUILD_MEMBERS;
 
 	let mut client = ClientBuilder::new(token, intents)
+		.event_handler(events::HANDLER)
 		.await
 		.expect("Failed to create client");
 
