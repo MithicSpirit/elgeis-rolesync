@@ -3,6 +3,7 @@ use serenity::prelude::*;
 
 pub(crate) mod config;
 mod events;
+pub(crate) mod role;
 pub(crate) mod user;
 
 // Registers handlers and starts the bot
