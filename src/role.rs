@@ -1,12 +1,12 @@
 use serenity::model::prelude::*;
 use serenity::prelude::*;
 
-pub fn delete(ctx: Context, id: RoleId)
+pub async fn delete(ctx: &Context, role: RoleId)
 {
 	todo!();
 }
 
-pub fn sync(ctx: Context, role: Role)
+pub async fn sync(ctx: &Context, source: RoleId, target: RoleId)
 {
 	todo!();
 }
