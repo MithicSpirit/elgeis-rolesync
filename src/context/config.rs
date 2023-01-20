@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::collections::HashSet;
 
 use serenity::model::prelude::*;
@@ -120,4 +121,16 @@ pub fn gen_config() -> (String, Config)
 		source_ignore_roles,
 		target_ignore_roles,
 	});
+}
+
+impl Config
+{
+	pub fn anchor_next_position(
+		&self,
+		roles: HashMap<RoleId, Role>,
+	) -> Option<u8>
+	{
+		roles.get(&self.anchor_role)
+			.and_then(|r| r.position.try_into().ok())
+	}
 }
