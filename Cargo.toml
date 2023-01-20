@@ -1,7 +1,12 @@
 [package]
 name = "elgeis-rolesync"
-version = "0.0.1"
+version = "0.0.9"
+authors = ["MithicSpirit <rpc01234@gmail.com>"]
 edition = "2021"
+description = "A Discord bot to synchronize user information from one server to another."
+readme = "README.org"
+repository = "https://github.com/MithicSpirit/elgeis-rolesync"
+license = "AGPL-3.0-only"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
