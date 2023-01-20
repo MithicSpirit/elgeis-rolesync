@@ -131,6 +131,7 @@ impl Config
 	) -> Option<u8>
 	{
 		roles.get(&self.anchor_role)
-			.and_then(|r| r.position.try_into().ok())
+			.and_then(|r| u8::try_from(r.position).ok())
+			.map(|p| p + 1)
 	}
 }

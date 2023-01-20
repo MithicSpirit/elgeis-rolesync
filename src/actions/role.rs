@@ -69,7 +69,7 @@ pub(super) async fn create_role(
 			Some(p) => p,
 			None => {
 				println!("Could not find anchor role; defaulting to position 1.");
-				0
+				1
 			},
 		};
 	let source = source_roles_maybe.unwrap().remove(&source_id).unwrap();
