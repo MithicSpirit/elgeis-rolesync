@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::sync::Arc;
 
+use serenity::async_trait;
 use serenity::http::client::Http;
 use serenity::model::prelude::*;
 use serenity::prelude::*;
@@ -24,13 +25,12 @@ pub async fn populate_context(ctx: &Context)
 		.get::<Config>()
 		.expect("Context data was not initialized correctly");
 
-	let (target_roles_name_id, source_roles_id_name) = tokio::join!(
+	let ((target_roles_name_id, anchor), source_roles_id_name) = tokio::join!(
 		target_roles(config, &ctx.http),
 		source_roles(config, &ctx.http),
 	);
 
-	//dbg!(source_roles_id_name);
-	//dbg!(target_roles_name_id);
+	data.insert::<RoleAnchor>(anchor);
 
 	let mut role_map: HashMap<RoleId, RoleId> = HashMap::new();
 	let mut rev_role_map: HashMap<RoleId, RoleId> = HashMap::new();
@@ -49,17 +49,34 @@ pub async fn populate_context(ctx: &Context)
 async fn target_roles(
 	config: &Config,
 	http: &Arc<Http>,
-) -> HashMap<String, RoleId>
+) -> (HashMap<String, RoleId>, u8)
 {
-	config.target
+	let roles = config
+		.target
 		.roles(http)
 		.await
-		.expect("Error getting roles from target server")
-		.iter()
-		.filter(|(id, _)| !config.target_ignore_roles.contains(id))
-		.map(|(id, role)| (role.name.clone(), *id))
-		.collect()
+		.expect("Error getting roles from target server");
+	let anchor: u8 = match roles
+		.get(&config.anchor_role)
+		.and_then(|r| r.position.try_into().ok())
+	{
+		Some(pos) => pos,
+		None => {
+			println!("Could not find anchor role; defaulting to 0");
+			0
+		},
+	};
+	return (
+		roles.iter()
+			.filter(|(id, _)| {
+				!config.target_ignore_roles.contains(id)
+			})
+			.map(|(id, role)| (role.name.clone(), *id))
+			.collect(),
+		anchor,
+	);
 }
+
 async fn source_roles(
 	config: &Config,
 	http: &Arc<Http>,
@@ -73,6 +90,24 @@ async fn source_roles(
 		.filter(|(id, _)| !config.source_ignore_roles.contains(id))
 		.map(|(id, role)| (*id, role.name.clone()))
 		.collect()
+}
+
+#[async_trait]
+pub trait UpdateAnchor
+{
+	async fn update_anchor(&self, ctx: &Context) -> &Self;
+}
+#[async_trait]
+impl UpdateAnchor for HashMap<RoleId, Role>
+{
+	async fn update_anchor(&self, ctx: &Context) -> &Self
+	{
+		let mut data = ctx.data.write().await;
+		self.get(&data.get::<Config>().unwrap().anchor_role)
+			.and_then(|r| r.position.try_into().ok())
+			.map(|pos| data.insert::<RoleAnchor>(pos));
+		return self;
+	}
 }
 
 pub mod keys
@@ -98,5 +133,11 @@ pub mod keys
 	impl TypeMapKey for RevRoleMap
 	{
 		type Value = HashMap<RoleId, RoleId>;
+	}
+
+	pub struct RoleAnchor {}
+	impl TypeMapKey for RoleAnchor
+	{
+		type Value = u8;
 	}
 }

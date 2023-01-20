@@ -8,6 +8,7 @@ pub struct Config
 	pub source:              GuildId,
 	pub target:              GuildId,
 	pub log_channel:         ChannelId,
+	pub anchor_role:         RoleId,
 	pub user_ignore:         HashSet<UserId>,
 	pub source_ignore_roles: HashSet<RoleId>,
 	pub target_ignore_roles: HashSet<RoleId>,
@@ -23,6 +24,7 @@ pub fn gen_config() -> (String, Config)
 	let source = GuildId(504795568313335809);
 	let target = GuildId(578380339043368960);
 	let log_channel = ChannelId(825045684507770891);
+	let anchor_role = RoleId(646142219480334337);
 
 	let user_ignore = [
 		565360672414629888, // alt
@@ -34,7 +36,7 @@ pub fn gen_config() -> (String, Config)
 	.map(UserId)
 	.collect();
 
-	let source_role_ignore = [
+	let source_ignore_roles = [
 		// TODO: staff/bot roles, @everyone
 		528683399070613514, // goomlandia
 		516776728824381464, // crafters
@@ -43,7 +45,7 @@ pub fn gen_config() -> (String, Config)
 	.map(RoleId)
 	.collect();
 
-	let target_role_ignore = [
+	let target_ignore_roles = [
 		// TODO: @everyone
 		616041023956582499, // *
 		618118554998407178, // bot-admin
@@ -80,6 +82,7 @@ pub fn gen_config() -> (String, Config)
 	let source = GuildId(1065285149345988724);
 	let target = GuildId(1065285115795755049);
 	let log_channel = ChannelId(1065285115795755052);
+	let anchor_role = RoleId(1065822687936655480);
 
 	let user_ignore = [
 		565360672414629888, // alt
@@ -90,7 +93,7 @@ pub fn gen_config() -> (String, Config)
 	.map(UserId)
 	.collect();
 
-	let source_role_ignore = [
+	let source_ignore_roles = [
 		1065294312423821377, // bot
 		1065295022330744884, // ignore1
 		1065285149345988724, // @everyone
@@ -99,7 +102,7 @@ pub fn gen_config() -> (String, Config)
 	.map(RoleId)
 	.collect();
 
-	let target_role_ignore = [
+	let target_ignore_roles = [
 		1065294580871872586, // bot
 		1065295668404551680, // ignore'1
 		1065285115795755049, // @everyone
@@ -112,8 +115,9 @@ pub fn gen_config() -> (String, Config)
 		source,
 		target,
 		log_channel,
+		anchor_role,
 		user_ignore,
-		source_ignore_roles: source_role_ignore,
-		target_ignore_roles: target_role_ignore,
+		source_ignore_roles,
+		target_ignore_roles,
 	});
 }
