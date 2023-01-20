@@ -159,6 +159,6 @@ impl EventHandler for Handler
 		let Some(target_role) = rolemap.get(&role.id) else {
 			return;
 		};
-		role::sync(&ctx, role.id, *target_role).await;
+		role::sync(&ctx, role, *target_role).await;
 	}
 }
