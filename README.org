@@ -2,4 +2,4 @@
 #+author: MithicSpirit
 
 A Discord bot that synchronizes roles, nicknames, and bans from one server to
-another designed for use in [[https://www.elgeis.com/][Elgeis]] by Goomlandia.
+another designed for use in [[https://www.elgeis.com/][Elgeis]] by [[https://wiki.elgeis.com/wiki/Goomlandia][Goomlandia]].
