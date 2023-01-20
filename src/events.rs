@@ -2,10 +2,9 @@ use serenity::async_trait;
 use serenity::model::prelude::*;
 use serenity::prelude::*;
 
+use crate::actions;
 use crate::context::keys::*;
 use crate::context::populate_context;
-use crate::role;
-use crate::user;
 
 pub struct Handler {}
 pub const HANDLER: Handler = Handler {};
@@ -40,7 +39,7 @@ impl EventHandler for Handler
 		{
 			return;
 		}
-		user::ban(&ctx, user).await;
+		actions::ban(&ctx, user).await;
 	}
 
 	// elgeis
@@ -58,7 +57,7 @@ impl EventHandler for Handler
 		{
 			return;
 		}
-		user::unban(&ctx, user).await;
+		actions::unban(&ctx, user).await;
 	}
 
 	// client
@@ -77,7 +76,7 @@ impl EventHandler for Handler
 			.await else {
 			return;
 		};
-		user::sync(&ctx, source_member, member).await;
+		actions::sync_user(&ctx, source_member, member).await;
 	}
 
 	// elgeis
@@ -101,7 +100,7 @@ impl EventHandler for Handler
 			.await else {
 			return;
 		};
-		user::clean(&ctx, member).await;
+		actions::clean(&ctx, member).await;
 	}
 
 	// elgeis
@@ -124,7 +123,7 @@ impl EventHandler for Handler
 		) else {
 			return;
 		};
-		user::sync(&ctx, source_member, target_member).await;
+		actions::sync_user(&ctx, source_member, target_member).await;
 	}
 
 	// elgeis
@@ -144,7 +143,7 @@ impl EventHandler for Handler
 		let Some(target_role) = rolemap.get(&role) else {
 			return;
 		};
-		role::delete(&ctx, *target_role).await;
+		actions::delete(&ctx, *target_role).await;
 	}
 
 	// elgeis
@@ -159,6 +158,6 @@ impl EventHandler for Handler
 		let Some(target_role) = rolemap.get(&role.id) else {
 			return;
 		};
-		role::sync(&ctx, role, *target_role).await;
+		actions::sync_role(&ctx, role, *target_role).await;
 	}
 }

@@ -39,7 +39,7 @@ pub async fn sync(ctx: &Context, source: Role, target_id: RoleId)
 	};
 }
 
-pub async fn create_role(ctx: &Context, source: Role)
+pub(super) async fn create_role(ctx: &Context, source: Role)
 {
 	let data = ctx.data.read().await;
 	let conf = data.get::<Config>().unwrap();
